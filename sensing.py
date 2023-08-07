@@ -6,16 +6,19 @@ Created on Fri Aug  4 17:20:45 2023
 SS_NOMA
 """
 import numpy as np
+import MCS
 # import matplotlib.pyplot as plt
 
-N = 10#int(1e5)                    # number of realization
+N = 10000#int(1e5)                    # number of realization
 PU = 1                          # Primary user
 SU = 2                          # 2 Seconadary user
-Ph0 = 0.5                       # PU active probability
+Pr = 0.5                       # PU active probability
 d = 500                         # PU-SU distance
 a1 = 0.75                       # power allocation factor
 a2 = 0.25                       # ------
 eta = 4                         # path loss exponent
+samples = 400
+realize = 10000
 
 # Generate rayleigh fading coefficient for both users
 h1 = np.sqrt(d**(-eta)) * (np.random.randn(1, N) + 1j * np.random.randn(1, N)) / np.sqrt(2)
@@ -54,5 +57,9 @@ for i in range(len(S)):
 Y1 = (h1*X1+w1).T
 Y2 = (h1*X2+w2).T
 
-y1 = np.abs(Y1)/no
-y2 = np.abs(Y2)/no
+y1 = np.abs(Y1)**2/no
+y2 = np.abs(Y2)**2/no
+
+
+
+# Y_rec, PU_stat, SNR, X_trans = MCS.MonteCarlo(realize, samples, SU, PowerTx=pt, PowerNo=no) 
